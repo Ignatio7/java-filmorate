@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
@@ -13,22 +15,23 @@ import java.time.LocalDate;
  * Film.
  */
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
     private static final LocalDate CINEMA_BIRTHDAY = LocalDate.of(1895, 12, 28);
 
-    private Integer id;
+    Integer id;
 
     @NotBlank(message = "Название не может быть пустым")
-    private String name;
+    String name;
 
     @Size(max = 200, message = "Максимальная длина описания — 200 символов")
-    private String description;
+    String description;
 
     @NotNull(message = "Дата релиза обязательна")
-    private LocalDate releaseDate;
+    LocalDate releaseDate;
 
     @Positive(message = "Продолжительность фильма должна быть положительным числом")
-    private int duration;
+    int duration;
 
     @AssertTrue(message = "Дата релиза — не раньше 28 декабря 1895 года")
     public boolean isReleaseDateValid() {
