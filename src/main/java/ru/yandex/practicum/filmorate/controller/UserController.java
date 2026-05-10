@@ -21,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private static final String USER_ID_PATH = "/{id}";
+    private static final String FRIEND_PATH = USER_ID_PATH + "/friends/{friendId}";
     private final UserService userService;
 
     @Autowired
@@ -43,27 +45,27 @@ public class UserController {
         return userService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(USER_ID_PATH)
     public User getById(@PathVariable int id) {
         return userService.getById(id);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
+    @PutMapping(FRIEND_PATH)
     public void addFriend(@PathVariable int id, @PathVariable int friendId) {
         userService.addFriend(id, friendId);
     }
 
-    @DeleteMapping("/{id}/friends/{friendId}")
+    @DeleteMapping(FRIEND_PATH)
     public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
         userService.removeFriend(id, friendId);
     }
 
-    @GetMapping("/{id}/friends")
+    @GetMapping(USER_ID_PATH + "/friends")
     public List<User> getFriends(@PathVariable int id) {
         return userService.getFriends(id);
     }
 
-    @GetMapping("/{id}/friends/common/{otherId}")
+    @GetMapping(USER_ID_PATH + "/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.getCommonFriends(id, otherId);
     }

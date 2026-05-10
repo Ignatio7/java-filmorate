@@ -22,6 +22,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
+    private static final String FILM_ID_PATH = "/{id}";
+    private static final String FILM_LIKE_PATH = FILM_ID_PATH + "/like/{userId}";
     private final FilmService filmService;
 
     @Autowired
@@ -44,17 +46,17 @@ public class FilmController {
         return filmService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(FILM_ID_PATH)
     public Film getById(@PathVariable int id) {
         return filmService.getById(id);
     }
 
-    @PutMapping("/{id}/like/{userId}")
+    @PutMapping(FILM_LIKE_PATH)
     public void addLike(@PathVariable int id, @PathVariable int userId) {
         filmService.addLike(id, userId);
     }
 
-    @DeleteMapping("/{id}/like/{userId}")
+    @DeleteMapping(FILM_LIKE_PATH)
     public void removeLike(@PathVariable int id, @PathVariable int userId) {
         filmService.removeLike(id, userId);
     }
