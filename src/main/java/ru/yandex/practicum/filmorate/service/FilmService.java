@@ -74,11 +74,11 @@ public class FilmService {
             throw new NotFoundException("Фильм не найден");
         }
         return filmStorage.getById(id)
-                .orElseThrow(() -> new NotFoundException("Фильм с id=" + id + " не найден"));
+                .orElseThrow(() -> new NotFoundException(String.format("Фильм с id=%d не найден", id)));
     }
 
     private void ensureUserExists(int userId) {
         userStorage.getById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
+                .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id=%d не найден", userId)));
     }
 }
