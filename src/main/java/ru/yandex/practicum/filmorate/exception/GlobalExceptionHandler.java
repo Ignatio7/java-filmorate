@@ -7,7 +7,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,14 +27,22 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         log.warn("Ошибка валидации: {}", errors);
-        return ResponseEntity.badRequest().body(new ErrorResponse("Ошибка валидации", errors));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Ошибка валидации", errors));
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<ErrorResponse> handleResponseStatus(ResponseStatusException ex) {
-        log.warn("Ошибка запроса: {}", ex.getReason());
-        return ResponseEntity.status(ex.getStatusCode())
-                .body(new ErrorResponse("Ошибка запроса", List.of(ex.getReason())));
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
+        log.warn("Ошибка валидации: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Ошибка валидации", List.of(ex.getMessage())));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException ex) {
+        log.warn("Объект не найден: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse("Объект не найден", List.of(ex.getMessage())));
     }
 
     @ExceptionHandler(Exception.class)
