@@ -10,12 +10,9 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Film.
- */
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film {
@@ -35,7 +32,9 @@ public class Film {
     @Positive(message = "Продолжительность фильма должна быть положительным числом")
     int duration;
 
-    Set<Integer> likes = new HashSet<>();
+    Mpa mpa;
+
+    List<Genre> genres = new ArrayList<>();
 
     @AssertTrue(message = "Дата релиза — не раньше 28 декабря 1895 года")
     public boolean isReleaseDateValid() {
